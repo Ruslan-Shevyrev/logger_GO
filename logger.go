@@ -21,5 +21,5 @@ func New(url, username, password string) *Logger {
 func (l *Logger) Log(message string, level string) {
 	// Здесь логика отправки в grafana
 	log.Printf("[grafana %s] [Level %s]: %s \n",
-		level, l.URL, message)
+		l.URL, level, message)
 }
