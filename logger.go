@@ -2,7 +2,6 @@ package logger
 
 import (
 	"bytes"
-	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -14,7 +13,6 @@ import (
 type LokiHandler struct {
 	url        string
 	labels     map[string]string
-	certPath   string
 	httpClient *http.Client
 }
 
@@ -27,22 +25,15 @@ type LokiStream struct {
 	Values [][]string        `json:"values"`
 }
 
-func NewLokiHandler(lokiURL, serviceName, certPath string) *LokiHandler {
+func NewLokiHandler(lokiURL, serviceName string) *LokiHandler {
 	transport := &http.Transport{}
-
-	if certPath == "" {
-		transport.TLSClientConfig = &tls.Config{
-			InsecureSkipVerify: true,
-		}
-	}
 
 	client := &http.Client{
 		Transport: transport,
 	}
 
 	return &LokiHandler{
-		url:      lokiURL,
-		certPath: certPath,
+		url: lokiURL,
 		labels: map[string]string{
 			"job": serviceName,
 			"app": "microservices",
@@ -107,11 +98,10 @@ type Logger struct {
 	lokiHandler *LokiHandler
 }
 
-func SetupLogger(lokiURL, serviceName, certPath string) *Logger {
+func New(lokiURL, serviceName string) *Logger {
 	handler := NewLokiHandler(
 		lokiURL,
 		serviceName,
-		certPath,
 	)
 
 	return &Logger{
