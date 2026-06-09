@@ -111,21 +111,21 @@ func New(lokiURL, serviceName string) *Logger {
 }
 
 func (l *Logger) Info(message string) {
-	l.logger.Println("[INFO]", message)
+	//l.logger.Println("[INFO]", message)
 	l.lokiHandler.Emit("INFO", 20, message)
 }
 
 func (l *Logger) Error(message string) {
-	l.logger.Println("[ERROR]", message)
+	//l.logger.Println("[ERROR]", message)
 	l.lokiHandler.Emit("ERROR", 40, message)
 }
 
 func (l *Logger) Warning(message string) {
-	l.logger.Println("[WARNING]", message)
+	//l.logger.Println("[WARNING]", message)
 	l.lokiHandler.Emit("WARNING", 30, message)
 }
 
 func (l *Logger) Debug(message string) {
-	l.logger.Println("[DEBUG]", message)
+	//l.logger.Println("[DEBUG]", message)
 	l.lokiHandler.Emit("DEBUG", 10, message)
 }
